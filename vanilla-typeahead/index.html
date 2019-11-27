@@ -84,6 +84,36 @@
 </body>
 
 <script>
+    let characters = [];
+    let list = document.querySelector('ul');
+    console.dir(list);
+
+    let search = document.querySelector('input');
+    // When we attach this method to our input, we'll
+    //  gain access to a property called `this.value` where 
+    //  `this` is bound to our input. So, `this.value` would
+    //   be the value of our keypress.
+
+
+    let filterText = function () {
+        let filtered = characters.filter(char => char.name.toLowerCase().includes(this.value.toLowerCase())).map(char => `<li>${char.name}</li>`)
+
+        if (filtered.length !== 0) {
+            render(filtered)
+        }
+    }
+
+    let render = function (arr) {
+        let html = arr.join('');
+        list.innerHTML = html;
+    }
+
+    let people = fetch('https://swapi.co/api/people')
+        .then(response => response.json())
+        .then(response => characters.push(...response.results));
+
+    search.addEventListener('keyup', filterText)
+
 </script>
 
 </html>

@@ -17,7 +17,6 @@
             background: #222;
             font-family: cursive
         }
-
         #wrap {
             width: 100%;
             height: 100vh;
@@ -27,25 +26,21 @@
             align-items: center;
             justify-content: center;
         }
-
         #wrap * {
             pointer-events: none;
         }
-
         #wrap h1 {
             color: rgba(255, 255, 255, .5);
             font-size: 5rem;
             text-transform: uppercase;
             text-align: center;
         }
-
         .ball {
             position: absolute;
             border-radius: 50%;
             animation: shrink 1s ease-in-out both;
             opacity: .5;
         }
-
         @keyframes shrink {
             100% {
                 transform: scale(0)
@@ -58,7 +53,108 @@
 </body>
 
 <script>
+  let mousePosition= {x:0, y:0};
+        let drawId; //keep track of when dots should be on or off the screen.
+               //function for randomizing of color,positioning ,and size of the dots
+        function getRandomNumber(min, max) {
+        return Math.round(Math.random() * (max - min + 1)) + min;
+      };
+      window.addEventListener("mousemove", function(mouseMoveEvent){
+        //   console.log(event)//when the mouse is moved
+        mousePosition.x= mouseMoveEvent.pageX;
+        mousePosition.y= mouseMoveEvent.pageY; 
+        console.log(mouseMoveEvent);
+        });
 
+      let draw= function(){
+        return setInterval(function(){
+        const container= document.getElementById('wrap');
+         
+        const color = `background:rgb(${getRandomNumber(
+          0,255)},${getRandomNumber(0, 255)}, ${getRandomNumber(0, 255)});`;
+          const ballSize = getRandomNumber(10, 30);
+          const size = `height:${ballSize}px; width:${ballSize}px;`;
+          const left = `left:${getRandomNumber(
+            mousePosition.x - ballSize,
+            mousePosition.x
+          )}px;`;
+          const top = `top:${getRandomNumber(
+            mousePosition.y - ballSize,
+            mousePosition.y
+          )}px; `;
+          const style = `${left}${top}${color}${size}`;
+
+
+        let ball= document.createElement('div');
+        ball.classList.add('ball');
+        ball.style=style;
+        
+        ball.addEventListener('animationend', function(event){
+        event.target.remove();
+        });
+        container.appendChild(ball);
+        }, 1);
+      }
+
+      window.addEventListener('mouseover', function(){
+          drawId= draw()
+      })
+      window.addEventListener('mouseout',clearInterval(drawId))
+      // window.addEventListener('mouseout', function(){
+      // clearInterval(drawId);
+      // })
 </script>
 
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+        
+       
+    
+      
+
+
+    
+
+    
+
+      
+
+
+
+
+
+
+
+    
+
